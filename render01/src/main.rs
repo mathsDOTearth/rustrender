@@ -18,7 +18,7 @@ struct Pixel {
 }
 
 impl Pixel {
-    /// Create a new Pixel with the given RGBA values.
+    /// Create a new Pixel with the given red, green, blue and alpha values.
     fn new(r: u8, g: u8, b: u8, a: u8) -> Self {
         Self { r, g, b, a }
     }
@@ -40,8 +40,8 @@ fn main() {
     .expect("Unable to create window");
 
     // Create a 2D pixel buffer initialised to black.
-    // Each pixel is stored as a Pixel struct.
-    let mut pixel_buffer: Vec> = vec![vec![Pixel::new(0, 0, 0, 255); WIDTH]; HEIGHT];
+    // This buffer is a vector of rows, each row being a vector of Pixel structs.
+    let mut pixel_buffer: Vec<Vec<Pixel>> = vec![vec![Pixel::new(0, 0, 0, 255); WIDTH]; HEIGHT];
 
     // Define the dimensions of the square.
     let square_width = 200;
@@ -60,9 +60,9 @@ fn main() {
 
     // Main loop.
     while window.is_open() && !window.is_key_down(Key::Escape) {
-        // Check the current state of the space bar.
+        // Check if the Space key is currently pressed.
         let current_space = window.is_key_down(Key::Space);
-        // If space has just been pressed (transition from not pressed to pressed)...
+        // If space was just pressed (transition from not pressed to pressed)
         if current_space && !prev_space_down {
             // Cycle the square colour.
             color_state = (color_state + 1) % 3;
@@ -70,13 +70,13 @@ fn main() {
                 0 => Pixel::new(255, 0, 0, 255),   // Red
                 1 => Pixel::new(0, 255, 0, 255),   // Green
                 2 => Pixel::new(0, 0, 255, 255),   // Blue
-                _ => Pixel::new(255, 0, 0, 255),   // Fallback to red (should not occur)
+                _ => Pixel::new(255, 0, 0, 255),   // Fallback to red
             };
         }
-        // Save the current space state for the next iteration.
+        // Store the current state for debouncing.
         prev_space_down = current_space;
 
-        // Clear the pixel buffer (fill with black).
+        // Clear the pixel buffer by filling it with black.
         for row in pixel_buffer.iter_mut() {
             for pixel in row.iter_mut() {
                 *pixel = Pixel::new(0, 0, 0, 255);
@@ -91,17 +91,19 @@ fn main() {
         }
 
         // Convert the 2D pixel buffer to a 1D u32 buffer.
-        let mut buffer: Vec = Vec::with_capacity(WIDTH * HEIGHT);
+        // Each pixel is converted into 0xAARRGGBB format.
+        let mut buffer: Vec<u32> = Vec::with_capacity(WIDTH * HEIGHT);
         for row in &pixel_buffer {
             for &pixel in row {
                 buffer.push(pixel.to_u32());
             }
         }
 
-        // Update the window with the new 1D pixel buffer.
-        // minifb handles double buffering internally.
+        // Update the window with the new pixel buffer.
+        // minifb manages double buffering internally.
         window
             .update_with_buffer(&buffer, WIDTH, HEIGHT)
             .expect("Failed to update window");
     }
 }
+
