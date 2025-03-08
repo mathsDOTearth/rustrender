@@ -1,3 +1,5 @@
+// testing our render functions with minifb
+// by Rich of maths.earth 202500308
 extern crate minifb;
 
 use minifb::{Key, Window, WindowOptions};
