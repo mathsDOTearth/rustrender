@@ -1,5 +1,5 @@
 // This module contains rendering helper functions that extend minifb.
-
+// by Rich of maths.earth 202500308
 
 /// A struct to represent an RGBA pixel.
 #[derive(Clone, Copy)]
