@@ -8,3 +8,4 @@ Also as a warning, I code Rust with a C accent, I am more of a C programmer, but
 
 * render01 - Setting up a 2d RGB buffer to work with minifb
 * render02 - Creating pixel, line, tiangle and rectangle draw functions
+* render03 - adding vector code and rotating a cube
