@@ -8,5 +8,6 @@ In this part we add vector.rs which has a Vector3 struct for holding a point in 
 * scale - multiply a vector by  a scalar
 * dot - find the dot product of two vectors
 * corss - find the cross product of two vectors
+* project_point - for projecting a point in 3d space to the 2d projection.
 
 main.c now demos a rotating 3d wireframe cube. 
